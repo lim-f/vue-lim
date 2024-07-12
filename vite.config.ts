@@ -39,7 +39,7 @@ export default defineConfig(({ mode }: {mode: string}) => {
     };
     const CommonConfig: UserConfig = {
         define: {
-            __DEV__: `${buildMode === Mode.Dev}`,
+            __DEV__: `false`, // `${buildMode === Mode.Dev}`,
             __APP__: `${buildMode === Mode.Dev || buildMode === Mode.BuildApp}`,
             __VERSION__: `"${getVersion()}"`,
         },

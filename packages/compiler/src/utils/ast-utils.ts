@@ -118,12 +118,32 @@ export function createArrowFnExpression (node: T.Expression|T.BlockStatement) {
 }
 
 export function isTargetUpdated (path: NodePath<Identifier|T.MemberExpression>) {
-    const { type, key } = getNodeInfo(path);
+    const { type, key, operator } = getNodeInfo(path);
+
     return (
         (type === 'AssignmentExpression' && key === 'left') ||
-        (type === 'UpdateExpression' && key === 'argument')
+        (type === 'UpdateExpression' && key === 'argument') ||
+        (type === 'UnaryExpression' && operator === 'delete') || // delete a.a;
+        isObjectAssign(path)
     );
 
+}
+
+export function isObjectAssign (path: NodePath<Identifier|T.MemberExpression>) {
+    const parent = path.parentPath;
+    if (parent.type === 'CallExpression') {
+        const callee = (parent.node as T.CallExpression).callee;
+
+        if (
+            callee.type === 'MemberExpression' &&
+            (callee.object as T.Identifier)?.name === 'Object' &&
+            (callee.property as T.Identifier)?.name === 'assign' &&
+            path.key === 0
+        ) {
+            return true;
+        }
+    }
+    return false;
 }
 
 const ArrayFnSet = new Set([ 'push', 'pop', 'unshift', 'shift', 'splice', 'sort', 'reverse' ]);
@@ -162,9 +182,11 @@ export function getMemberKey (path: NodePath<T.MemberExpression>) {
 export function getNodeInfo (path: NodePath<T.Node>) {
     // @ts-ignore
     const type: IAstTypes = path.container?.type || '';
+    // @ts-ignore
+    const operator = path.container?.operator;
     const key = path.key as IAstKey;
     const listKey = path.listKey as IAstKey;
-    return { type, key, listKey };
+    return { type, key, listKey, operator };
 }
 
 export function isStaticNode (node: T.Node|null): boolean {

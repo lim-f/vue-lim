@@ -21,12 +21,12 @@ export class ScriptNode {
     constructor (code: string) {
 
         this.code = code;
-        console.log('HScriptNode onText', code);
+
+        __DEV__ && console.log('HScriptNode onText', code);
 
         this.ast = parseJS(code);
 
         let blockDeep = 0;
-        // debugger;
         traverseAst(this.ast, {
             BlockStatement: {
                 enter () {blockDeep++;},
@@ -34,13 +34,10 @@ export class ScriptNode {
             },
             Identifier: (path) => {
                 const name = path.node.name;
-                // if (path.node.name === 'c') {
-                //     console.log('scriptNode: used is', path.container, path.listKey, path.key, path.toString());
-                // }
                 if (blockDeep === 0) {
                     const info = extractVariable(path);
                     if (info) {
-                        console.log('extractVariable', name, info);
+                        __DEV__ && console.log('extractVariable', name, info);
                         const declarePath = path.findParent((parent) => {
                             return /Declaration$/.test(parent.node.type);
                         });
@@ -62,11 +59,10 @@ export class ScriptNode {
                 }
             },
         });
-        console.log('defineVariables', this.defineVariables);
+        __DEV__ && console.log('defineVariables', this.defineVariables);
     }
     private checkUpdatedVariable (path: NodePath, name: string) {
         const binding = path.scope.getBinding(name);
-        debugger;
         this.onBinding(name, binding);
     }
 
