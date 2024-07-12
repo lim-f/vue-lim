@@ -1,0 +1,40 @@
+<!--
+ * @Author: chenzhongsheng
+ * @Date: 2024-04-30 11:18:31
+ * @Description: Coding something
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/tailwind-output.css">
+    <title>Demo</title>
+    <style>
+      body,html{
+        background-color: #444;
+      }
+      iframe{
+        background-color: #444;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+</head>
+<body>
+  <iframe id="iframe" frameborder="0"></iframe>
+  <div id="result"></div>
+  <script>
+    window.process = { env: {} };
+    window.Buffer = {
+      from: (array) => new Uint8Array(array),
+      isBuffer: (v)=>v instanceof Uint8Array,
+    };
+  </script>
+  <script type="module" src="./dev/index.ts"></script>
+</body>
+</html>

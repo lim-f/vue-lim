@@ -1,0 +1,38 @@
+{
+    "name": "vue-lim-compiler",
+    "version": "0.0.0",
+    "main": "src/index.ts",
+    "module": "src/index.ts",
+    "types": "src/index.ts",
+    "sideEffects": [
+        "*.css",
+        "*.less",
+        "*.scss",
+        "*.sass"
+    ],
+    "files": [
+        "es",
+        "dist"
+    ],
+    "dependencies": {
+        "vue-lim-util": "workspace:*",
+        "@babel/generator": "^7.24.7",
+        "@babel/parser": "^7.24.7",
+        "@babel/traverse": "^7.24.7",
+        "@babel/types": "^7.24.7",
+        "@types/babel__traverse": "^7.20.6",
+        "htmlparser2": "^9.1.0"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org/"
+    },
+    "typings": "src/index.ts",
+    "unpkg": "dist/vm-utils.iife.min.js",
+    "jsdelivr": "dist/vm-utils.iife.min.js",
+    "devDependencies": {
+        "@types/babel__generator": "^7.6.8"
+    }
+}
