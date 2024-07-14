@@ -4,7 +4,7 @@
  * @Description: Coding something
  */
 
-import {SFCParser} from "./parser/sfc-parser";
+import { SFCParser } from './parser/sfc-parser';
 
 
 export function transformVueSFC (input: string) {
@@ -15,6 +15,6 @@ export function transformVueSFC (input: string) {
     return parser.toString();
 }
 
-export function isLimSFC(input: string, filename = ''){
+export function isLimSFC (input: string, filename = '') {
     return filename.endsWith('.lim.vue') || /<script.*?lim.*?>/.test(input);
 }

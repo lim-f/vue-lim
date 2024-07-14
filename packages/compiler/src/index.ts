@@ -4,4 +4,4 @@
  * @Description: Coding something
  */
 // import { Parser } from 'htmlparser2';
-export { transformVueSFC } from './main';
+export { transformVueSFC, isLimSFC } from './main';

@@ -9,16 +9,9 @@ import legacy from '@vitejs/plugin-legacy';
 import { resolve } from 'path';
 import { babel } from '@rollup/plugin-babel';
 import { buildPackageName, upcaseFirstLetter } from './build/utils';
-// import vue from '@vitejs/plugin-vue';
-import { existsSync } from 'fs';
-// import { uglify } from 'rollup-plugin-uglify';
-import myPlugin from './plugin/index';
-
-// mode_[lib-name]_[extra]
 
 const Mode = {
     Dev: 'dev', // dev/index.ts
-    BuildApp: 'app', // dev/index.ts
     BuildLib: 'lib', // packages/xxx/src/index.ts
 };
 
@@ -34,13 +27,12 @@ export default defineConfig(({ mode }: {mode: string}) => {
 
     const config = {
         [Mode.Dev]: geneDevAppConfig,
-        [Mode.BuildApp]: geneBuildAppConfig,
         [Mode.BuildLib]: () => geneBuildLibConfig(dirName),
     };
     const CommonConfig: UserConfig = {
         define: {
             __DEV__: `false`, // `${buildMode === Mode.Dev}`,
-            __APP__: `${buildMode === Mode.Dev || buildMode === Mode.BuildApp}`,
+            __APP__: `${buildMode === Mode.Dev}`,
             __VERSION__: `"${getVersion()}"`,
         },
         plugins: [
@@ -63,41 +55,12 @@ function geneDevAppConfig (): UserConfig {
             legacy({
                 targets: [ 'defaults', 'not IE 11' ],
             }),
-
-            myPlugin(),
         ],
         publicDir: './dev/public',
         server: {
             host: '0.0.0.0',
             port: 8091,
             hmr: true,
-            headers: { // 使用sharedArrayBuffer
-                'Cross-Origin-Embedder-Policy': 'require-corp',
-                'Cross-Origin-Opener-Policy': 'same-origin',
-            },
-        },
-    };
-}
-
-// ! 构建 App 时的配置
-function geneBuildAppConfig (): UserConfig {
-    return {
-        plugins: [
-            // vue(),
-            legacy({
-                targets: [ 'defaults', 'not IE 11' ],
-            }),
-            myPlugin(),
-        ],
-        build: {
-            rollupOptions: {
-                output: {
-                    dir: resolve(__dirname, './dist'),
-                },
-                input: {
-                    main: resolve(__dirname, './index.html'),
-                },
-            },
         },
     };
 }
@@ -117,11 +80,9 @@ function geneBuildLibConfig (dirName: string): UserConfig {
                 ...SDKlibConfig(dirName),
             },
             rollupOptions: {
-                // 不需要
-                external: [ ...Object.keys(deps.dependencies) ],
+                // external: [ ...Object.keys(deps.dependencies) ],
                 plugins: [
                     babelPlugin(),
-                    // uglify(),
                 ],
             },
             outDir: resolve(pkgRoot, 'dist'), // 打包后存放的目录文件

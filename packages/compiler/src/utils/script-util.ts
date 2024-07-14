@@ -5,7 +5,7 @@
  */
 import type { NodePath } from '@babel/traverse';
 import type { Identifier, VariableDeclaration, VariableDeclarator } from '@babel/types';
-import { getMemberKey, getNodeInfo, isTargetArrayUpdated, isTargetUpdated, isUsedIdentifier } from './ast-utils';
+import { getMemberKey, getNodeInfo, isTargetArrayUpdated, isTargetUpdated } from './ast-utils';
 import { parseJS, traverseAst } from './js-utils';
 
 export enum VarType {

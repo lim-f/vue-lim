@@ -5,7 +5,7 @@
  */
 
 
-import { transformVueSFC } from 'vue-lim-compiler';
+import { transformVueSFC } from 'vue-lim';
 
 const input = `
 <script lim setup>

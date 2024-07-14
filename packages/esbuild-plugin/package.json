@@ -1,0 +1,20 @@
+{
+    "name": "esbuild-plugin-vue-lim",
+    "version": "0.0.0",
+    "description": "Make Vue easier to use.",
+    "main": "src/index.ts",
+    "typings": "src/index.ts",
+    "module": "src/index.ts",
+    "repository": "git@github.com:theajack/vue-lim.git",
+    "author": "tackchen <theajack@qq.com>",
+    "keywords": [
+    ],
+    "license": "MIT",
+    "type": "commonjs",
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org/"
+    },
+    "dependencies": {
+        "vue-lim": "workspace:*"
+    }
+}

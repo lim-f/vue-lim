@@ -41,8 +41,7 @@ function buildSinglePkg (pkgName) {
     buildCommon({
         titleName: pkgName,
         bundleCmd: `npx vite build -m=lib_${pkgName}`,
-        // ! 暂时关掉dts
-        // dtsCmd: `npx dts-bundle-generator -o packages/${pkgName}/dist/index.d.ts packages/${pkgName}/src/index.ts`,
+        dtsCmd: `npx dts-bundle-generator -o packages/${pkgName}/dist/index.d.ts packages/${pkgName}/src/index.ts`,
     });
 }
 
@@ -200,7 +199,8 @@ function execBin (name, cmd = name) {
 }
 
 function buildPackageName (dirName) {
-    return `vm-${dirName}`; // todo 修改包命名规则
+    const pkg = require(path.resolve(__dirname, `../packages/${dirName}/package.json`));
+    return pkg.name; // todo 修改包命名规则
 }
 
 function isNodeExec () {
