@@ -6,12 +6,8 @@
 
 import { SFCParser } from './parser/sfc-parser';
 
-
 export function transformVueSFC (input: string) {
-
-
     const parser = new SFCParser(input);
-
     return parser.toString();
 }
 

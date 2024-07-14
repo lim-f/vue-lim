@@ -1,15 +1,19 @@
 {
   "name": "vue-lim",
   "private": true,
-  "version": "0.0.0",
   "scripts": {
     "dev": "vite -m=dev",
     "build": "node build/build-all.js",
-    "build:lib": "node build/build-single-lib.js",
-    "init:pub": "node ./build/init-package-info.js EXEC",
-    "init:dev": "node ./build/init-package-info.js dev EXEC",
-    "publish": "node ./build/publish.js EXEC",
+    "build:src": "node build/build-src.js",
     "lint": "eslint packages --ext ts"
+  },
+  "dependencies": {
+      "@babel/generator": "^7.24.7",
+      "@babel/parser": "^7.24.7",
+      "@babel/traverse": "^7.24.7",
+      "@babel/types": "^7.24.7",
+      "@types/babel__traverse": "^7.20.6",
+      "htmlparser2": "^9.1.0"
   },
   "devDependencies": {
     "@rollup/plugin-babel": "^6.0.4",
@@ -30,6 +34,6 @@
     "typescript-eslint": "0.0.1-alpha.0",
     "up-fs": "^0.0.1",
     "vite": "^5.0.6",
-    "vue-lim": "workspace:*"
+    "@types/babel__generator": "^7.6.8"
   }
 }

@@ -1,0 +1,21 @@
+{
+    "name": "vue-lim",
+    "version": "0.0.1",
+    "description": "Make Vue easier to use.",
+    "main": "vue-lim.es.min.js",
+    "module": "vue-lim.es.min.js",
+    "types": "index.d.ts",
+    "unpkg": "vue-lim.iife.min.js",
+    "jsdelivr": "vue-lim.iife.min.js",
+    "license": "MIT",
+    "keywords": [
+        "vue3",
+        "vue-lim"
+    ],
+    "homepage": "https://theajack.github.io/vue-lim",
+    "repository": "git@github.com:theajack/vue-lim.git",
+    "author": "tackchen <theajack@qq.com>",
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org"
+    }
+}

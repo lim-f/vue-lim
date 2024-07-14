@@ -37,14 +37,6 @@ function buildCommon ({
     log.green(`${result.toString()}`);
 }
 
-function buildSinglePkg (pkgName) {
-    buildCommon({
-        titleName: pkgName,
-        bundleCmd: `npx vite build -m=lib_${pkgName}`,
-        dtsCmd: `npx dts-bundle-generator -o packages/${pkgName}/dist/index.d.ts packages/${pkgName}/src/index.ts`,
-    });
-}
-
 function resolveRootPath (str) {
     return path.resolve(__dirname, `../${str}`);
 }
@@ -225,7 +217,7 @@ module.exports = {
     readFile,
     writeFile,
     log,
-    buildSinglePkg,
+    buildCommon,
     buildPackageName,
     isNodeExec,
 };

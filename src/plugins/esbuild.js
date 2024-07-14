@@ -4,15 +4,14 @@
  * @Date: 2022-11-25 10:45:54
  * @Description: Coding something
  */
-import { transformVueSFC, isLimSFC } from 'vue-lim';
+import { transformVueSFC, isLimSFC } from './vue-lim.es.min';
 import path from 'path';
 import fs from 'fs';
 
-
-export default (): any => ({
+export default () => ({
     name: 'vue-lim',
-    setup (build: any) {
-        build.onResolve({ filter: /\.vue$/ }, (args: any) => {
+    setup (build) {
+        build.onResolve({ filter: /\.vue$/ }, (args) => {
             if (args.resolveDir === '') return;
 
             return {
@@ -23,8 +22,7 @@ export default (): any => ({
             };
         });
 
-        // load files with "yaml" namespace
-        build.onLoad({ filter: /.*/, namespace: 'vue-lim' }, (args: any) => {
+        build.onLoad({ filter: /.*/, namespace: 'vue-lim' }, (args) => {
             const id = args.path;
             const code = fs.readFileSync(id, 'utf-8');
 

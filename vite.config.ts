@@ -12,22 +12,21 @@ import { buildPackageName, upcaseFirstLetter } from './build/utils';
 
 const Mode = {
     Dev: 'dev', // dev/index.ts
-    BuildLib: 'lib', // packages/xxx/src/index.ts
+    BuildSrc: 'src', // packages/xxx/src/index.ts
 };
 
 // https://vitejs.dev/config/
 // @ts-ignore
 export default defineConfig(({ mode }: {mode: string}) => {
 
-    const [ buildMode, dirName, extra ] = mode.split('_');
+    const [buildMode, format] = mode.split('_');
 
-    console.log(`vite build mode=${buildMode}; dirName=${dirName}; extra=${extra}`);
+    console.log('buildMode = ', buildMode)
 
-    console.log(`${Date.now()}:INFO: mode=${buildMode}, dirName=${dirName}`);
 
     const config = {
         [Mode.Dev]: geneDevAppConfig,
-        [Mode.BuildLib]: () => geneBuildLibConfig(dirName),
+        [Mode.BuildSrc]: () => geneBuildLibConfig(format),
     };
     const CommonConfig: UserConfig = {
         define: {
@@ -66,21 +65,21 @@ function geneDevAppConfig (): UserConfig {
 }
 
 // ! 构建 lib 时的配置
-function geneBuildLibConfig (dirName: string): UserConfig {
-    const pkgRoot = resolve(__dirname, `./packages/${dirName}`);
+function geneBuildLibConfig (format: string): UserConfig {
+    const pkgRoot = resolve(__dirname, `./src`);
 
     // 取lib包的依赖;
-    const deps = require(resolve(pkgRoot, './package.json'));
+    const deps = require(resolve(__dirname, './package.json'));
     // ! VITE 文档说明： 注意，在 lib 模式下使用 'es' 时，build.minify 选项不会缩减空格，因为会移除掉 pure 标注，导致破坏 tree-shaking。
     return {
         build: {
             minify: true,
             lib: {
-                entry: resolve(pkgRoot, 'src/index.ts'), // 打包的入口文件
-                ...SDKlibConfig(dirName),
+                entry: resolve(pkgRoot, `./index.ts`), // 打包的入口文件
+                ...SDKlibConfig(format),
             },
             rollupOptions: {
-                // external: [ ...Object.keys(deps.dependencies) ],
+                external: format === 'iife' ? [] : [ ...Object.keys(deps.dependencies) ],
                 plugins: [
                     babelPlugin(),
                 ],
@@ -102,11 +101,11 @@ const babelPlugin = () => (
         configFile: resolve(__dirname, './build/babel.config.js'),
     })
 );
-function SDKlibConfig (dirName: string): Partial<LibraryOptions> {
+function SDKlibConfig (format: any): Partial<LibraryOptions> {
     return {
-        name: upcaseFirstLetter(dirName), // 包名
-        formats: [ 'es', 'iife' ], // 打包模式，默认是es和umd都打
-        fileName: (format: string) => `${buildPackageName(dirName)}.${format}.min.js`,
+        name: 'VueLim', // 包名
+        formats: [ format ], // 打包模式，默认是es和umd都打
+        fileName: (format: string) => `vue-lim.${format}.min.js`,
     };
 }
 /*
