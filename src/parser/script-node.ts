@@ -1,10 +1,11 @@
 import type { ParseResult } from '@babel/parser';
 import { generateCode, parseJS, traverseAst } from '../utils/js-utils';
-import type { File, Identifier, VariableDeclaration } from '@babel/types';
+import type { File, Identifier, ImportDeclaration, VariableDeclaration } from '@babel/types';
 import type { IJson, IVariableData } from '../utils/script-util';
 import { VarType, extractVariable } from '../utils/script-util';
 import { getMemberKey, isTargetArrayUpdated, isTargetUpdated, t } from '../utils/ast-utils';
 import type { Binding, NodePath } from '@babel/traverse';
+import { Computed } from './computed';
 
 /*
  * @Author: chenzhongsheng
@@ -15,11 +16,13 @@ export class ScriptNode {
     code: string;
     ast: ParseResult<File>;
 
+    computed: Computed;
+
     defineVariables: IJson<IVariableData> = {};
 
 
     constructor (code: string) {
-
+        this.computed = new Computed(this);
         this.code = code;
 
         __DEV__ && console.log('HScriptNode onText', code);
@@ -76,20 +79,24 @@ export class ScriptNode {
     private onBinding (name: string, binding?: Binding) {
         if (!binding) throw new Error(`${name} is Undefined`);
         const variable = this.defineVariables[name];
-
         if (!variable) {
-            throw new Error(`${name} is not found`);
+            console.warn(`${name} is not found`);
+            return;
         }
         if (variable.modified) return;
         if (variable.path.parentPath === binding.path) {
-            this.addRefImport();
+            this.addImport('ref');
             this.modifyVariable(binding);
         }
     }
 
-    private modifyVariable (binding: Binding) {
+    modifyVariable (binding: Binding, fn = 'ref') {
         const name = binding.identifier.name;
         const variable = this.defineVariables[name];
+        if (!variable) {
+            console.warn(`${name} is not found`);
+            return;
+        }
 
         // 修改变量声明处
         if (!variable.modified) {
@@ -101,36 +108,58 @@ export class ScriptNode {
                 throw new Error('未找到节点');
             }
 
-            // node.init?.type === 'CallExpression' && node.id;
-            node.init = t.callExpression(t.identifier('ref'), [ node.init! ]);
+            const arg = fn === 'ref' ? node.init! : t.arrowFunctionExpression([], node.init!);
+
+            node.init = t.callExpression(t.identifier(fn), [ arg ]);
 
             binding.referencePaths.forEach(item => {
+                if (
+                    item.parent.type === 'CallExpression' &&
+                    // @ts-ignore
+                    item.parent.callee.name === 'watch'
+                ) {
+                    return;
+                }
+                this.computed.checkRelatedComputed(item);
                 item.replaceInline(t.memberExpression(t.identifier(name), t.identifier('value')));
                 item.skip();
+            });
+
+            binding.constantViolations.forEach(item => {
+                if (item.type === 'AssignmentExpression') {
+                    // @ts-ignore
+                    item.node.left = t.memberExpression(item.node.left, t.identifier('value'));
+                }
             });
         }
     }
 
-    private _addedRefImport = false;
-    private addRefImport () {
-        if (this._addedRefImport) return;
-        this._addedRefImport = true;
+    private _vueImport: ImportDeclaration;
 
-        const ref = this.defineVariables.ref;
-        if (ref) {
+    addImport (name: string) {
+        const flag = `_added_${name}_import`;
+        if (this[flag]) return;
+        this[flag] = true;
+
+        const variable = this.defineVariables[name];
+        if (variable) {
             // @ts-ignore
-            if (ref.type === VarType.Import && ref.declarePath.node?.source.value == 'vue') {
+            if (variable.type === VarType.Import && variable.declarePath.node?.source.value == 'vue') {
+                // @ts-ignore
+                this._vueImport = variable.declarePath.node;
                 return;
             } else {
-                throw new Error(`"ref" ref has the same name: ${ref.declarePath.toString()}`);
+                throw new Error(`"${name}" ${name} has the same name: ${variable.declarePath.toString()}`);
             }
         }
 
-        this.ast.program.body.unshift(
-            t.importDeclaration([
-                t.importSpecifier(t.identifier('ref'), t.identifier('ref')),
-            ], t.stringLiteral('vue'))
-        );
+        const specifier = t.importSpecifier(t.identifier(name), t.identifier(name));
+        if (this._vueImport) {
+            this._vueImport.specifiers.push(specifier);
+        } else {
+            this._vueImport = t.importDeclaration([ specifier ], t.stringLiteral('vue'));
+            this.ast.program.body.unshift(this._vueImport);
+        }
     }
 
     transformJs (sfc: string) {

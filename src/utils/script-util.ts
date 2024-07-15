@@ -30,18 +30,18 @@ export interface IJson<T = any> {
 export function extractVariable (path: NodePath<Identifier>): Omit<IVariableData, 'script'> | null {
 
     const { type, key } = getNodeInfo(path);
-    // if (
-    //     (type === 'ImportSpecifier' && key === 'local') ||
-    //     (type === 'ImportDefaultSpecifier' && key === 'local')
-    // ) {
-    //     return {
-    //         type: VarType.Import,
-    //         declarePath: path.parentPath.parentPath!,
-    //         kind: 'none',
-    //         start,
-    //         modified: false,
-    //     };
-    // }
+    if (
+        (type === 'ImportSpecifier' && key === 'local') ||
+        (type === 'ImportDefaultSpecifier' && key === 'local')
+    ) {
+        return {
+            type: VarType.Import,
+            declarePath: path.parentPath.parentPath!,
+            kind: 'none',
+            modified: false,
+            path,
+        };
+    }
 
     if (type === 'VariableDeclarator' && key === 'id') {
         const initType = (path.parentPath.node as VariableDeclarator).init?.type;

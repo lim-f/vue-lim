@@ -3,7 +3,7 @@
  * @Date: 2024-04-30 11:04:54
  * @Description: Coding something
  */
-import { transformVueSFC, isLimSFC } from './main';
-export { transformVueSFC, isLimSFC } from './main';
+import { transformVue, isLimSFC } from './main';
+export { transformVue, isLimSFC } from './main';
 
-export default {transformVueSFC, isLimSFC};
+export default { transformVue, isLimSFC };

@@ -4,7 +4,7 @@
  * @Date: 2022-11-25 10:45:54
  * @Description: Coding something
  */
-import { transformVueSFC, isLimSFC } from './vue-lim.es.min';
+import { transformVue, isLimSFC } from './vue-lim.es.min';
 import path from 'path';
 import fs from 'fs';
 
@@ -27,7 +27,7 @@ export default () => ({
             const code = fs.readFileSync(id, 'utf-8');
 
             return {
-                contents: isLimSFC(code, id) ? transformVueSFC(code) : code,
+                contents: isLimSFC(code, id) ? transformVue(code) : code,
             };
         });
     }

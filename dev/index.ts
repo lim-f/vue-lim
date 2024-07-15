@@ -5,33 +5,25 @@
  */
 
 
-import { transformVueSFC } from '../src/index';
+import { transformVue } from '../src/index';
 
 const input = `
-<script lim setup>
-let i = {a: 1};
-let list = [1,2,3];
-Object.assign(list, {});
-const push = ()=>{
-    // list.push(111)
-    // list[0] = 3;
-    // delete list[0];
-    Object.assign(list, {});
-}
-const increase = ()=>{
-    i.a++;
-}
+<script setup lim>
+import {ref} from 'vue';
+
+let count = 0;
+let a = count+1
+
+watch(count, (...args)=>{
+  console.log(args)
+})
 </script>
+
 <template>
-  <div>
-    <div v-for="item in list"></div>
-    <div>{{ i }}</div>
-    <button @click="increase">increase</button>
-    <button @click="push">increase</button>
-  </div>
+  <button @click="count++">count is {{ count }}</button>
 </template>
 `;
 
-const output = transformVueSFC(input);
+const output = transformVue(input);
 
 console.log(output);

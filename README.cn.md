@@ -5,12 +5,11 @@
 -->
 ## [Vue Lim](https://github.com/theajack/vue-lim)
 
-Make Vue easier to use. (Lim means 'Less is More')
+让 Vue 使用起来更简单. （Lim 的含义是 'Less is More'）
 
-**[Playground](https://theakjack.github.io/vue-lim) | [React-Lim](https://github.com/theajack/react-lim) | [中文](https://github.com/theajack/vue-lim/blob/master/README.cn.md)**
+**[在线体验](https://theakjack.github.io/vue-lim) | [React-Lim](https://github.com/theajack/react-lim) | [English](https://github.com/theajack/vue-lim)**
 
-
-## A Simple Sample
+## 简单的例子
 
 ```html
 <script setup lim>
@@ -24,15 +23,15 @@ const increase = ()=>{
 </template>
 ```
 
-## Quick Use
+## 快速开始
 
 ```
 npm create lim
 ```
 
-then choose `vue-lim`
+然后选择 `vue-lim`
 
-## Install Use
+## 安装使用
 
 ```
 npm i vue-lim
@@ -58,7 +57,7 @@ import lim from 'vue-lim/rollup'
 export default {
     plugins: [
         lim(),
-        // Introduce vue related plug-ins by yourself
+        // 自行引入其他vue
     ]
 };
 ```
@@ -72,7 +71,7 @@ import { build } from 'esbuild';
 build({
     plugins: [
         lim(),
-        // Introduce vue related plug-ins by yourself
+        // 自行引入其他vue相关插件
     ],
 });
 ```
@@ -87,18 +86,18 @@ module.exports = {
             loader: 'vue-lim/webpack',
             exclude: /node_modules/
         }]
-        // Introduce vue related loaders by yourself
+        // 自行引入其他vue相关loader
     }
 }
 ```
 
-## Other
+## 其他
 
-### Compile
+### 编译
 
-When using `.lim.vue` as the file suffix, lim compilation will be enabled
+当使用 `.lim.vue` 作为文件后缀时会开启 lim 的编译
 
-When using only `.vue`, you need to add `lim` attribute on script tag to enable lim compilation
+当使用仅 `.vue` 作为后缀, 你需要添加 `lim` 属性到 script 标签来开启 lim 的编译
 
 ```html
 <script setup lim>

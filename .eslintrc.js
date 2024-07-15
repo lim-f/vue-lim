@@ -4,13 +4,7 @@
  * @Description: Coding something
  */
 module.exports = {
-    // 'parser': '@typescript-eslint/parser',
-    // "parser": "vue-eslint-parser",
-
-    extends: [
-        'plugin:vue/vue3-recommended',
-        '@vue/typescript/recommended'
-    ],
+    parser: '@typescript-eslint/parser',
     plugins: [
         '@typescript-eslint',
     ],
@@ -18,15 +12,7 @@ module.exports = {
         'node': true,
     },
     rules: {
-        'vue/multi-word-component-names': 'off',
         'no-var': 'error',
-        'vue/no-unused-vars': 'error',
-        '@typescript-eslint/consistent-type-definitions': [
-            'error',
-            'interface'
-        ],
-        '@typescript-eslint/consistent-type-imports': 1,
-        '@typescript-eslint/no-unused-vars': 'error', // 使用 ts 未使用变量的规则 比如枚举类型在es中会报错
         'no-extend-native': 0,
         'no-new': 0,
         'no-useless-escape': 0,
@@ -51,7 +37,7 @@ module.exports = {
         'array-bracket-spacing': [ 'error', 'always' ],
         'arrow-spacing': 'error',
         'no-multiple-empty-lines': 'error',
-        'no-unused-vars': 'error',
+        // 'no-unused-vars': 'error',
         'spaced-comment': 'error',
         'quotes': [ 'error', 'single', { 'allowTemplateLiterals': true } ],
         'no-unreachable': 'error',
@@ -67,15 +53,7 @@ module.exports = {
         'space-infix-ops': 2,
         'no-irregular-whitespace': 2, // 不规则的空白不允许
         'no-trailing-spaces': 2, // 一行结束后面有空格就发出警告
-        'vue/require-default-prop': 'off',
-        '@typescript-eslint/no-empty-function': 1,
-        'vue/max-attributes-per-line': 'off',
-        'vue/singleline-html-element-content-newline': 'off',
         '@typescript-eslint/ban-ts-comment': 'off',
-        'vue/no-setup-props-destructure': 'off',
-        '@typescript-eslint/no-this-alias': 0,
-        'no-unused-vars': 'warn',
-        '@typescript-eslint/no-unused-vars': 'warn',
-        '@typescript-eslint/no-var-requires': 0
+        '@typescript-eslint/no-unused-vars': 'error',
     }
 };

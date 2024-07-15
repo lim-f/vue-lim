@@ -3,8 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "vite -m=dev",
-    "build": "node build/build-all.js",
-    "build:src": "node build/build-src.js",
+    "build": "node build/build-src.js",
     "lint": "eslint packages --ext ts"
   },
   "dependencies": {

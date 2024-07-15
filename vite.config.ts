@@ -79,7 +79,7 @@ function geneBuildLibConfig (format: string): UserConfig {
                 ...SDKlibConfig(format),
             },
             rollupOptions: {
-                external: format === 'iife' ? [] : [ ...Object.keys(deps.dependencies) ],
+                // external: format === 'iife' ? [] : [ ...Object.keys(deps.dependencies) ],
                 plugins: [
                     babelPlugin(),
                 ],
