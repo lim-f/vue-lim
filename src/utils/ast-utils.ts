@@ -167,7 +167,10 @@ export function isFunctionDeclaration () {
 
 // a.b.c => a
 export function getMemberKey (path: NodePath<T.MemberExpression>) {
-    let obj = path.node.object;
+    return getMemberNodeKey(path.node);
+}
+export function getMemberNodeKey (node: T.MemberExpression) {
+    let obj = node.object;
 
     while (obj.type === 'MemberExpression') {
         obj = obj.object;

@@ -19,9 +19,9 @@ const Mode = {
 // @ts-ignore
 export default defineConfig(({ mode }: {mode: string}) => {
 
-    const [buildMode, format] = mode.split('_');
+    const [ buildMode, format ] = mode.split('_');
 
-    console.log('buildMode = ', buildMode)
+    console.log('buildMode = ', buildMode);
 
 
     const config = {
@@ -30,7 +30,7 @@ export default defineConfig(({ mode }: {mode: string}) => {
     };
     const CommonConfig: UserConfig = {
         define: {
-            __DEV__: `false`, // `${buildMode === Mode.Dev}`,
+            __DEV__: `${buildMode === Mode.Dev}`,
             __APP__: `${buildMode === Mode.Dev}`,
             __VERSION__: `"${getVersion()}"`,
         },

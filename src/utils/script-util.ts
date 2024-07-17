@@ -5,7 +5,7 @@
  */
 import type { NodePath } from '@babel/traverse';
 import type { Identifier, VariableDeclaration, VariableDeclarator } from '@babel/types';
-import { getMemberKey, getNodeInfo, isTargetArrayUpdated, isTargetUpdated } from './ast-utils';
+import { getMemberKey, getMemberNodeKey, getNodeInfo, isTargetArrayUpdated, isTargetUpdated } from './ast-utils';
 import { parseJS, traverseAst } from './js-utils';
 
 export enum VarType {
@@ -97,6 +97,16 @@ export function analyzeExpression (code: string): string[] { // 返回修改了�
                 // ! 如果是局部变量则不计入统计
                 if (path.scope.getOwnBinding(name)) return;
                 updateVariables.push(name);
+            }
+        },
+        CallExpression: (path) => {
+            const args = path.node.arguments;
+            for (const arg of args) {
+                if (arg.type === 'Identifier') {
+                    updateVariables.push(arg.name);
+                } else if (arg.type === 'MemberExpression') {
+                    updateVariables.push(getMemberNodeKey(arg));
+                }
             }
         }
     });

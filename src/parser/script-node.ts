@@ -71,7 +71,7 @@ export class ScriptNode {
 
     onEventModify (name: string) {
         const variable = this.defineVariables[name];
-        if (variable.modified) return;
+        if (!variable || variable.modified) return;
         const binding = variable.path.scope.getBinding(name);
         this.onBinding(name, binding);
     }
@@ -79,11 +79,7 @@ export class ScriptNode {
     private onBinding (name: string, binding?: Binding) {
         if (!binding) throw new Error(`${name} is Undefined`);
         const variable = this.defineVariables[name];
-        if (!variable) {
-            console.warn(`${name} is not found`);
-            return;
-        }
-        if (variable.modified) return;
+        if (!variable || variable.modified) return;
         if (variable.path.parentPath === binding.path) {
             this.addImport('ref');
             this.modifyVariable(binding);
@@ -94,7 +90,6 @@ export class ScriptNode {
         const name = binding.identifier.name;
         const variable = this.defineVariables[name];
         if (!variable) {
-            console.warn(`${name} is not found`);
             return;
         }
 
