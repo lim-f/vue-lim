@@ -12,8 +12,8 @@
         "vue3",
         "vue-lim"
     ],
-    "homepage": "https://theajack.github.io/vue-lim",
-    "repository": "git@github.com:theajack/vue-lim.git",
+    "homepage": "https://lim-f.github.io/playground",
+    "repository": "git@github.com:lim-f/vue-lim.git",
     "author": "tackchen <theajack@qq.com>",
     "publishConfig": {
         "registry": "https://registry.npmjs.org"

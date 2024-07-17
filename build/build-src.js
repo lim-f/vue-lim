@@ -15,8 +15,8 @@ function main () {
     const pubDir = resolve(__dirname, '../publish');
     const srcDir = resolve(__dirname, '../src/dist');
 
-    const esName = 'vue-lim.es.min.js'
-    const iifeName = 'vue-lim.iife.min.js'
+    const esName = 'vue-lim.es.min.js';
+    const iifeName = 'vue-lim.iife.min.js';
     const typeName = 'index.d.ts';
 
     ufs.removeDir(pubDir);
@@ -43,7 +43,7 @@ function main () {
     const plugins = fs.readdirSync(pluginDir);
     plugins.forEach(name => {
         ufs.copyFile({ src: `${pluginDir}/${name}`, target: `${pubDir}/${name}` });
-    })
+    });
 
     ufs.writeFile(`${pluginDir}/package.json`, JSON.stringify({
         name: 'vue-lim',
@@ -56,8 +56,8 @@ function main () {
         jsdelivr: iifeName,
         license: 'MIT',
         keywords: [ 'vue3', 'vue-lim' ],
-        homepage: 'https://theajack.github.io/vue-lim',
-        'repository': 'git@github.com:theajack/vue-lim.git',
+        homepage: 'https://lim-f.github.io/playground',
+        'repository': 'git@github.com:lim-f/vue-lim.git',
         'author': 'tackchen <theajack@qq.com>',
         publishConfig: {
             registry: 'https://registry.npmjs.org',
