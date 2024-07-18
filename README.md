@@ -3,11 +3,21 @@
  * @Date: 2024-04-30 11:57:26
  * @Description: Coding something
 -->
+
 ## [Vue Lim](https://github.com/lim-f/vue-lim)
 
-Make Vue easier to use. (Lim means 'Less is More')
+<div align='center'>
+    <img width='100' src='https://shiyix.cn/images/vue.svg'/>
+    
+### Make Vue easier to use.
+
+Lim means 'Less is More'
 
 **[Playground](https://lim-f.github.io/playground) | [React-Lim](https://github.com/lim-f/react-lim) | [中文](https://github.com/lim-f/vue-lim/blob/master/README.cn.md)**
+
+</div>
+
+
 
 
 ## A Simple Sample

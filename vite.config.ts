@@ -8,8 +8,6 @@ import { defineConfig } from 'vite';
 import legacy from '@vitejs/plugin-legacy';
 import { resolve } from 'path';
 import { babel } from '@rollup/plugin-babel';
-import { buildPackageName, upcaseFirstLetter } from './build/utils';
-
 const Mode = {
     Dev: 'dev', // dev/index.ts
     BuildSrc: 'src', // packages/xxx/src/index.ts

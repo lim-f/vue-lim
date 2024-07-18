@@ -3,11 +3,21 @@
  * @Date: 2024-04-30 11:57:26
  * @Description: Coding something
 -->
+
+
 ## [Vue Lim](https://github.com/lim-f/vue-lim)
 
-让 Vue 使用起来更简单. （Lim 的含义是 'Less is More'）
+<div align='center'>
+    <img width='100' src='https://shiyix.cn/images/vue.svg'/>
+    
+### 让 Vue 使用起来更简单.
+
+Lim 的含义是 'Less is More
 
 **[在线体验](https://lim-f.github.io/playground) | [React-Lim](https://github.com/lim-f/react-lim) | [English](https://github.com/lim-f/vue-lim)**
+
+</div>
+
 
 ## 简单的例子
 

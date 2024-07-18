@@ -31,17 +31,16 @@ import { transformVue } from '../src/index';
 
 const input = `
 <script setup lim>
-const person = {
-    name: 'Jack',
-    age: 18,
-};
-const addAge = (data) => data.age += 1;
+import {ref} from 'vue';
+let count = ref(0);
+let count2 = 1;
+const increase = ()=>{
+    count.value++
+    count2++
+}
 </script>
 <template>
-    <div>
-        <div>age = {{person.age}}</div>
-        <button @click="addAge(person)">Add Age</button>
-    </div>
+  <button @click="increase">count is {{ count }}</button>
 </template>
 `;
 

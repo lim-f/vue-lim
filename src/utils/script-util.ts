@@ -5,8 +5,10 @@
  */
 import type { NodePath } from '@babel/traverse';
 import type { Identifier, VariableDeclaration, VariableDeclarator } from '@babel/types';
-import { getMemberKey, getMemberNodeKey, getNodeInfo, isTargetArrayUpdated, isTargetUpdated } from './ast-utils';
+import { getMemberKey, getMemberNodeKey, getNodeInfo, isFromImport, isTargetArrayUpdated, isTargetUpdated } from './ast-utils';
 import { parseJS, traverseAst } from './js-utils';
+
+const vueNames = new Set([ 'ref', 'reactive', 'shallowRef', 'shallowReactive', 'computed', 'ShallowUnwrapRef', 'toRaw' ]);
 
 export enum VarType {
     Import,
@@ -44,7 +46,24 @@ export function extractVariable (path: NodePath<Identifier>): Omit<IVariableData
     }
 
     if (type === 'VariableDeclarator' && key === 'id') {
-        const initType = (path.parentPath.node as VariableDeclarator).init?.type;
+        const init = (path.parentPath.node as VariableDeclarator).init;
+
+        if (!init) return null;
+
+        const initType = init?.type;
+
+        if (initType === 'CallExpression') {
+
+            // @ts-ignore
+            const callName = init.callee.name;
+
+            if (vueNames.has(callName)) {
+                if (!isFromImport(path, callName, 'vue')) {
+                    return null;
+                }
+            }
+        }
+
         if (initType === 'ArrowFunctionExpression' || initType === 'FunctionExpression') {
             return null;
         }

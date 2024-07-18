@@ -245,3 +245,14 @@ export function createDeclarator (id: string, expression: T.Expression) {
         expression,
     );
 }
+
+export function isFromImport (path: NodePath<any>, name: string, moduleName: string) {
+    const binding = path.scope.getBinding(name);
+    if (!binding) return false;
+    const parent = binding.path.parentPath;
+    if (parent?.type === 'ImportDeclaration') {
+        // @ts-ignore
+        if (parent.node?.source?.value === moduleName) return true;
+    }
+    return false;
+}
