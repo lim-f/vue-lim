@@ -17,9 +17,6 @@ Lim means 'Less is More'
 
 </div>
 
-
-
-
 ## A Simple Sample
 
 ```html
