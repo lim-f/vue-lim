@@ -3,7 +3,7 @@
  * @Date: 2024-07-14 21:40:16
  * @Description: Coding something
  */
-import { transformVue, isLimSFC } from './vue-lim.es.min';
+import { transformVue, isLimSFC } from './vue-lim.es.min.js';
 
 export default function (this, code)  {
     const id = this.resourcePath;

@@ -113,7 +113,7 @@ When using only `.vue`, you need to add `lim` attribute on script tag to enable 
 </script>
 ```
 
-### 编译Api
+### Compile Api
 
 ```js
 import { transformVue } from 'vue-lim';

@@ -71,6 +71,7 @@ function main () {
         main: esName,
         module: esName,
         types: typeName,
+        type: 'module',
         unpkg: iifeName,
         jsdelivr: iifeName,
         license: 'MIT',

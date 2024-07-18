@@ -3,7 +3,7 @@
  * @Date: 2024-07-14 21:41:12
  * @Description: Coding something
  */
-import { transformVue, isLimSFC } from './vue-lim.es.min';
+import { transformVue, isLimSFC } from './vue-lim.es.min.js';
 
 export default function ()  {
     return {
