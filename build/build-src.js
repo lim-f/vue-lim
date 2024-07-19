@@ -63,13 +63,11 @@ function main () {
 
     const pluginDir = resolve(__dirname, '../src/plugins');
     const plugins = fs.readdirSync(pluginDir);
-    ufs.copyFile({ src: `${pluginDir}/plugin.d.ts`, target: `${pubDir}/plugin.d.ts` });
 
     const exportsMap = {
         '.': {
             import: `./${esName}`,
-            require: `./${cjsName}`,
-            types: `./${typeName}`
+            require: `./${cjsName}`
         }
     };
 
@@ -77,10 +75,10 @@ function main () {
         const stat = fs.statSync(resolve(pluginDir, name));
         if (!stat.isDirectory()) return;
         ufs.copyDir({ src: `${pluginDir}/${name}`, target: `${pubDir}/${name}` });
+        ufs.copyFile({ src: `${pluginDir}/plugin.d.ts`, target: `${pubDir}/${name}/index.d.ts` });
         exportsMap[`./${name}`] = {
             import: `./${name}/index.mjs`,
-            require: `./${name}/index.cjs`,
-            types: `./plugin.d.ts`
+            require: `./${name}/index.cjs`
         };
     });
 

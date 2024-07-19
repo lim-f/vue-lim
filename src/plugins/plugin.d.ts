@@ -1,2 +1,2 @@
-let plugin: () => any;
+declare let plugin: () => any;
 export default plugin;
