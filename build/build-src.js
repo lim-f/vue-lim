@@ -67,7 +67,8 @@ function main () {
     const exportsMap = {
         '.': {
             import: `./${esName}`,
-            require: `./${cjsName}`
+            require: `./${cjsName}`,
+            types: `./${typeName}`
         }
     };
 
@@ -78,7 +79,8 @@ function main () {
         ufs.copyFile({ src: `${pluginDir}/plugin.d.ts`, target: `${pubDir}/${name}/index.d.ts` });
         exportsMap[`./${name}`] = {
             import: `./${name}/index.mjs`,
-            require: `./${name}/index.cjs`
+            require: `./${name}/index.cjs`,
+            types: `./${name}/index.d.ts`
         };
     });
 
