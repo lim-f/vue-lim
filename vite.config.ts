@@ -67,7 +67,7 @@ function geneBuildLibConfig (format: string): UserConfig {
     const pkgRoot = resolve(__dirname, `./src`);
 
     // 取lib包的依赖;
-    const deps = require(resolve(__dirname, './package.json'));
+    // const deps = require(resolve(__dirname, './package.json'));
     // ! VITE 文档说明： 注意，在 lib 模式下使用 'es' 时，build.minify 选项不会缩减空格，因为会移除掉 pure 标注，导致破坏 tree-shaking。
     return {
         build: {
@@ -103,7 +103,15 @@ function SDKlibConfig (format: any): Partial<LibraryOptions> {
     return {
         name: 'VueLim', // 包名
         formats: [ format ], // 打包模式，默认是es和umd都打
-        fileName: (format: string) => `vue-lim.${format}.min.js`,
+        fileName: (format: string) => {
+            let prefix = '';
+            if (format === 'cjs') {
+                prefix = 'c';
+            } else if (format === 'es') {
+                prefix = 'm';
+            }
+            return `vue-lim.min.${prefix}js`;
+        },
     };
 }
 /*

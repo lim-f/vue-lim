@@ -3,9 +3,9 @@
  * @Date: 2024-07-14 21:41:12
  * @Description: Coding something
  */
-import { transformVue, isLimSFC } from './vue-lim.es.min.js';
+const { transformVue, isLimSFC } = require('../vue-lim.min.cjs');
 
-export default function ()  {
+function plugin ()  {
     return {
         name: 'vite:vue-lim',
         transform (code, id) {
@@ -13,4 +13,7 @@ export default function ()  {
             return { code: transformVue(code) };
         }
     };
-}
+};
+
+module.exports = plugin;
+module.exports.default = plugin;

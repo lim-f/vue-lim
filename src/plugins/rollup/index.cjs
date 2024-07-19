@@ -4,15 +4,16 @@
  * @Date: 2022-11-25 10:45:54
  * @Description: Coding something
  */
-import { transformVue, isLimSFC } from './vue-lim.es.min.js';
+const { transformVue, isLimSFC } =  require('../vue-lim.min.cjs');
 
-export default function ()  {
-
+function plugin ()  {
     return {
-        name: 'rollup-plugin-prodec',
+        name: 'rollup-plugin-vue-lim',
         transform (code, id) {
             if (!isLimSFC(code, id)) return null;
             return { code: transformVue(code) };
         }
     };
 }
+module.exports = plugin;
+module.exports.default = plugin;

@@ -3,10 +3,13 @@
  * @Date: 2024-07-14 21:40:16
  * @Description: Coding something
  */
-import { transformVue, isLimSFC } from './vue-lim.es.min.js';
+const { transformVue, isLimSFC } = require('../vue-lim.min.cjs');
 
-export default function (this, code)  {
+function loader (this, code)  {
     const id = this.resourcePath;
     if (!isLimSFC(code, id)) return code;
     return transformVue(code);
 }
+
+module.exports = loader;
+module.exports.default = loader;

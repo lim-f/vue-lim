@@ -32,8 +32,9 @@ function main () {
     const pubDir = resolve(__dirname, '../publish');
     const srcDir = resolve(__dirname, '../src/dist');
 
-    const esName = 'vue-lim.es.min.js';
-    const iifeName = 'vue-lim.iife.min.js';
+    const esName = 'vue-lim.min.mjs';
+    const cjsName = 'vue-lim.min.cjs';
+    const iifeName = 'vue-lim.min.js';
     const typeName = 'index.d.ts';
 
     ufs.removeDir(pubDir);
@@ -42,8 +43,12 @@ function main () {
         titleName: 'vue-lim',
         bundleCmd: `npx vite build -m=src_es`,
     });
-
     ufs.copyFile({ src: `${srcDir}/${esName}`, target: `${pubDir}/${esName}`, handler });
+    buildCommon({
+        titleName: 'vue-lim',
+        bundleCmd: `npx vite build -m=src_cjs`,
+    });
+    ufs.copyFile({ src: `${srcDir}/${cjsName}`, target: `${pubDir}/${cjsName}`, handler });
 
     buildCommon({
         titleName: 'vue-lim',
@@ -58,22 +63,37 @@ function main () {
 
     const pluginDir = resolve(__dirname, '../src/plugins');
     const plugins = fs.readdirSync(pluginDir);
+    ufs.copyFile({ src: `${pluginDir}/plugin.d.ts`, target: `${pubDir}/plugin.d.ts` });
+
+    const exportsMap = {
+        '.': {
+            import: `./${esName}`,
+            require: `./${cjsName}`,
+            types: `./${typeName}`
+        }
+    };
+
     plugins.forEach(name => {
-        if (name === 'plugin.d.ts') return;
-        ufs.copyFile({ src: `${pluginDir}/${name}`, target: `${pubDir}/${name}` });
-        ufs.copyFile({ src: `${pluginDir}/plugin.d.ts`, target: `${pubDir}/${name.replace('.js', '.d.ts')}` });
+        const stat = fs.statSync(resolve(pluginDir, name));
+        if (!stat.isDirectory()) return;
+        ufs.copyDir({ src: `${pluginDir}/${name}`, target: `${pubDir}/${name}` });
+        exportsMap[`./${name}`] = {
+            import: `./${name}/index.mjs`,
+            require: `./${name}/index.cjs`,
+            types: `./plugin.d.ts`
+        };
     });
 
     ufs.writeFile(`${pubDir}/package.json`, JSON.stringify({
         name: 'vue-lim',
         version: version,
         description: 'Make Vue easier to use.',
-        main: esName,
-        module: esName,
-        types: typeName,
-        type: 'module',
-        unpkg: iifeName,
-        jsdelivr: iifeName,
+        main: `./${cjsName}`,
+        module: `./${esName}`,
+        types: `./${typeName}`,
+        unpkg: `./${iifeName}`,
+        jsdelivr: `./${iifeName}`,
+        exports: exportsMap,
         license: 'MIT',
         keywords: [ 'vue3', 'vue-lim' ],
         homepage: 'https://lim-f.github.io/playground',
