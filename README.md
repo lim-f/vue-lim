@@ -46,7 +46,7 @@
 
 vue-lim is a compilation tool that allows you to get rid of using the Composition API. Here's a simple example
 
-## A Simple Sample
+## [A Simple Sample](https://lim-f.github.io/playground)
 
 ```html
 <script setup lim>

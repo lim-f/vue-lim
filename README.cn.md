@@ -20,7 +20,7 @@ Lim 的含义是 'Less is More
 
 vue-lim 是一个编译工具，让你可以摆脱使用Composition API。以下是一个简单的例子
 
-## 简单的例子
+## [简单的例子](https://lim-f.github.io/playground)
 
 ```html
 <script setup lim>
