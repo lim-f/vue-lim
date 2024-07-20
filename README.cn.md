@@ -14,10 +14,11 @@
 
 Lim 的含义是 'Less is More
 
-**[在线体验](https://lim-f.github.io/playground) | [React-Lim](https://github.com/lim-f/react-lim) | [English](https://github.com/lim-f/vue-lim)**
+**[文档](https://lim-f.github.io/docs-cn) | [在线体验](https://lim-f.github.io/playground) | [React-Lim](https://github.com/lim-f/react-lim) | [English](https://github.com/lim-f/vue-lim)**
 
 </div>
 
+vue-lim 是一个编译工具，让你可以摆脱使用Composition API。以下是一个简单的例子
 
 ## 简单的例子
 

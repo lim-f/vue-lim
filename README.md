@@ -42,7 +42,9 @@
 
 ## [Vue Lim](https://github.com/lim-f/vue-lim): Make Vue easier to use. (Lim means 'Less is More')
 
-**[Playground](https://lim-f.github.io/playground) | [React-Lim](https://github.com/lim-f/react-lim) | [中文](https://github.com/lim-f/vue-lim/blob/master/README.cn.md)**
+**[Docs](https://lim-f.github.io/docs) | [Playground](https://lim-f.github.io/playground) | [React-Lim](https://github.com/lim-f/react-lim) | [中文](https://github.com/lim-f/vue-lim/blob/master/README.cn.md)**
+
+vue-lim is a compilation tool that allows you to get rid of using the Composition API. Here's a simple example
 
 ## A Simple Sample
 
