@@ -33,6 +33,9 @@ export class SFCParser {
                 this.isInLimScript = true;
             }
         } else {
+
+            if (!this.script) return;
+
             for (const key in attributes) {
                 const value = attributes[key];
 
@@ -44,7 +47,7 @@ export class SFCParser {
                         });
                     }
                 } else if (key === 'v-model') {
-                    this.script.onEventModify(value);
+                    this.script.onEventModify(value, true);
                 } else if (key === 'v-for') {
                     // ! 因为不好区分是否对 item做了修改，此处只要v-for使用了 都视为modify
                     this.script.onEventModify(value.substring(value.lastIndexOf(' in ') + 4));

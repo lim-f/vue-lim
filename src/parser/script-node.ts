@@ -2,7 +2,7 @@ import type { ParseResult } from '@babel/parser';
 import { generateCode, parseJS, traverseAst } from '../utils/js-utils';
 import type { File, Identifier, ImportDeclaration, VariableDeclaration } from '@babel/types';
 import type { IJson, IVariableData } from '../utils/script-util';
-import { VarType, extractVariable } from '../utils/script-util';
+import { VarType, extractVariable, isInitFromVue } from '../utils/script-util';
 import { getMemberKey, isTargetArrayUpdated, isTargetUpdated, t } from '../utils/ast-utils';
 import type { Binding, NodePath } from '@babel/traverse';
 import { Computed } from './computed';
@@ -69,9 +69,22 @@ export class ScriptNode {
         this.onBinding(name, binding);
     }
 
-    onEventModify (name: string) {
+    onEventModify (name: string, forceRef = false) {
         const variable = this.defineVariables[name];
-        if (!variable || variable.modified) return;
+
+        if (!variable) return;
+
+        // 强制将computed改为ref
+        if (forceRef && !variable.forceRef && variable.modifiedFn === 'computed') {
+            variable.forceRef = true;
+            variable.modified = false;
+        } else {
+            if (isInitFromVue(variable.path)) {
+                return;
+            }
+        }
+
+        if (variable.modified) return;
         const binding = variable.path.scope.getBinding(name);
         this.onBinding(name, binding);
     }
@@ -105,7 +118,15 @@ export class ScriptNode {
 
             const arg = fn === 'ref' ? node.init! : t.arrowFunctionExpression([], node.init!);
 
-            node.init = t.callExpression(t.identifier(fn), [ arg ]);
+            // ! 对 computed 在 v-model 中使用场景强制改成 ref
+            if (variable.forceRef && variable.modifiedFn === 'computed') {
+                node.init = t.callExpression(t.identifier(fn), [
+                    // @ts-ignore
+                    node.init.arguments[0].body
+                ]);
+            } else {
+                node.init = t.callExpression(t.identifier(fn), [ arg ]);
+            }
 
             binding.referencePaths.forEach(item => {
                 if (
@@ -126,6 +147,7 @@ export class ScriptNode {
                     item.node.left = t.memberExpression(item.node.left, t.identifier('value'));
                 }
             });
+            variable.modifiedFn = fn;
         }
     }
 

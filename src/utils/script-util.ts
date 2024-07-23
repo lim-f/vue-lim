@@ -23,6 +23,8 @@ export interface IVariableData {
     path: NodePath<Identifier>,
     kind: IDeclareType,
     modified: boolean,
+    forceRef?: boolean,
+    modifiedFn?: string,
 }
 export interface IJson<T = any> {
     [prop: string]: T;
@@ -47,21 +49,12 @@ export function extractVariable (path: NodePath<Identifier>): Omit<IVariableData
 
     if (type === 'VariableDeclarator' && key === 'id') {
         const init = (path.parentPath.node as VariableDeclarator).init;
-
         if (!init) return null;
 
         const initType = init?.type;
 
-        if (initType === 'CallExpression') {
-
-            // @ts-ignore
-            const callName = init.callee.name;
-
-            if (vueNames.has(callName)) {
-                if (!isFromImport(path, callName, 'vue')) {
-                    return null;
-                }
-            }
+        if (isInitFromVue(path)) {
+            return null;
         }
 
         if (initType === 'ArrowFunctionExpression' || initType === 'FunctionExpression') {
@@ -89,6 +82,26 @@ export function extractVariable (path: NodePath<Identifier>): Omit<IVariableData
     // }
 
     return null;
+}
+
+export function isInitFromVue (path: NodePath<Identifier>) {
+
+    const init = (path.parentPath?.node as VariableDeclarator).init;
+
+    const initType = init?.type;
+
+    if (initType === 'CallExpression') {
+
+        // @ts-ignore
+        const callName = init.callee.name;
+
+        if (vueNames.has(callName)) {
+            if (isFromImport(path, callName, 'vue')) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 
