@@ -39,10 +39,13 @@ function main () {
 
     ufs.removeDir(pubDir);
 
+    fs.mkdirSync(pubDir);
+
     buildCommon({
         titleName: 'vue-lim',
         bundleCmd: `npx vite build -m=src_es`,
     });
+
     ufs.copyFile({ src: `${srcDir}/${esName}`, target: `${pubDir}/${esName}`, handler });
     buildCommon({
         titleName: 'vue-lim',

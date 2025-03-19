@@ -11,6 +11,7 @@
 
 
 import { transformVue } from '../src/index';
+// import { transformVue } from '../publish';
 
 // const input = `
 // <script setup lim>
@@ -29,7 +30,8 @@ import { transformVue } from '../src/index';
 // </template>
 // `;
 
-const input = `
+const input = {
+    demo1: `
 
 <script setup lim>
 import { ref, watchEffect } from 'vue'
@@ -81,8 +83,25 @@ function formatDate(v) {
     </li>
   </ul>
 </template>
-`;
+`,
+    demo2: `
+  <template>
+  <div>
+    <h1 class="text-4xl text-green-500">Benchmark Results</h1>
+    <pre>{{ results }}</pre>
+    <h2 class="text-2xl text-red-500 font-bold">结果:{{ fastest.key }}，{{ fastest.value }}</h2>
+  </div>
+</template>
 
-const output = transformVue(input);
+<script setup lang="ts" lim>
+
+  const reverseString = (str: string) => str.split('').reverse().join('');
+
+</script>
+  `
+};
+
+
+const output = transformVue(input.demo1);
 
 console.log(output);

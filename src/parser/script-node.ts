@@ -58,6 +58,7 @@ export class ScriptNode {
                     isTargetArrayUpdated(path)
                 ) {
                     const key = getMemberKey(path);
+                    if (!key) return;
                     this.checkUpdatedVariable(path, key);
                 }
             },
